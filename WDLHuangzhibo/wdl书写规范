@@ -1,0 +1,99 @@
+正式上线的WDL路径：
+	/hwfssz1/BIGDATA_COMPUTING/bigdata_autoanalysis/auto/WDL
+gitlab：
+	https://gitlab.genomics.cn/flexlab/acs/WDL
+wdl书写规范
+	https://github.com/openwdl/wdl/blob/master/versions/1.0/SPEC.md
+wdl版本管理{
+	使用gitlab管理WDL。workflow和task用不同的分支管理
+	master:用于管理workflow和相关文档
+	wgs-task：用于管理WGS相关task
+	meta-task 用于管理meta相关task
+}
+
+语法检查{
+	java -jar womtool.jar validate task.wdl [-i input.json]
+	测试方法及测试用例：
+		准备测试小数据
+		准备测试用input.json(task_test.json)
+		在自动化平台的所有对列进行测试
+		所有测试成功后，合并至gitlab相关分支
+		考虑使用持续集成
+}
+
+基本约定{
+	1 WDL头文件部需要添加version 1.0
+	2 使用空格缩进，禁止使用tab
+	3 workflow和task需分文件编写
+}
+
+样本信息{
+	1 TSV格式文件
+	2 第一列必须为SampleID
+}
+input{
+	1 必须定义
+	需要声明两个约定的参数：
+		1 DataInfo
+		2 SampleID	
+}
+output：{
+	1 不在output中定义的结果，不会被交付，将被作为中间数据处理
+}
+parameter_meta{
+	1 在workflow定义parameter_meta模块：支持前端查看，方便非流程创建者使用某流程投递任务
+	2 案例：
+	parameter_meta {
+		SampleID :{description :"sample name"}
+		DataInfo:{
+			description: "data info: SAMPLE_ID\tFLOWCELL\tLANE\tLIB\tREAD1\tREAD2"
+		}
+	}
+}
+meta语块 {
+	1 流程失败需要通知流程维护者
+	2 案例：
+  meta {
+  	maintainer :"Joe Somebody"
+  	email: "joe@company.org"
+  	description:"WGS 分析流程，reference版本：hg38_decoy"
+  }
+}
+workflow main{
+	在task{}外部，定义workflow main语句，作为task测试入口
+}
+task{
+	1 使用import导入task，禁止在workflow中定义task
+	2 定义input语块
+	3 声明计算文件必须使用File类型声明
+	4 声明非计算文件和程序时，可用String类型代替File类型（只限task input语块）
+	5 定义内存数和线程数
+	6 以program为单位创建task：为便于维护和更新，提高task的可复用性，task的创建应以program为单位，文件名应与TaskName相同。
+}
+input {
+	1 input语块中的File类型的文件，cromwell会将其软连接致task的执行目录
+	2 声明计算文件必须使用File类型声明（例如来自DataInfo的输入文件:fq.gz）
+	3 来自其他task的中间计算数据（某些文件的索引也需要同时声明，如：bam.bai和vcf.gz.tbi）
+}
+command{
+	1 输入输出：禁止使用绝对路径
+	2 若程序要求必须输入绝对路径，应使用$PWD
+		案例：
+		command {
+			${cnvnator} -root $PWD/out.root \
+				-chrom ${sep=' ' chr_name} \
+				-tree ${input_bam} \
+				-unique
+		}
+	使用管道添加 set -o pipefail 返回最后一个非0值
+	包含多条语句需要添加set -e 遇到错误则退出。(程序无法通过0和非0判断需要通过额外的脚本判断log或结果，然后返回0或非0,（有待讨论）)
+}
+runtime{
+	必须设置backed
+	必须指定task需要申请的资源额度
+	若声明了cpu和mem，应使用变量定义
+	若未使用变量，可以用常量
+}
+output{
+	task的输出必须在output中定义
+}

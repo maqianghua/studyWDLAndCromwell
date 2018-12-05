@@ -1,0 +1,5 @@
+{
+  "wf_echo.echo.out":"output",
+  "wf_echo.echo.cpu":"1",
+  "wf_echo.echo.mem":"1"
+}
