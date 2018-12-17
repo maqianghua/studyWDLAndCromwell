@@ -107,7 +107,7 @@ Configuration配置{
 					  enabled = true
 					  invalidate-bad-cache-results = true
 					}
-					当call-caching.enabled=true (default: false)，Cromwell将能引用或拷贝原先hob的结果（当正确的情况下），当invalidate-bad-cache-results=true (default: true)，任何缓存的结果包含的文件在一个缓存中不能被获取，Cromwell将会视任何的缓存结果为无效结果。这种情况是被期望的，但是不是想要的，假如该失败是因为外部原因，就比如，在用户身份鉴定中出现的差异。 Cromwell也接受工作流选项重写缓存读或写的行为
+					当call-caching.enabled=true (default: false)，Cromwell将能引用或拷贝原先job的结果（当正确的情况下），当invalidate-bad-cache-results=true (default: true)，任何缓存的结果包含的文件在一个缓存中不能被获取时，Cromwell将会视任何的缓存结果为无效结果。这种情况是被期望的，但是不是想要的，假如该失败是因为外部原因，就比如，在用户身份鉴定中出现的差异。 Cromwell也接受工作流选项重写缓存读或写的行为
 			}
 			Local filesystem options{
 				当运行一个job在配置文件（共享文件系统）下，Cromwell提供一些额外的选项在backend的配置选项

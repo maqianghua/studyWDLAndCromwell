@@ -1,0 +1,4 @@
+{
+	"wf.hello.pattern":"^[a-z]+$",
+	"wf.hello.in":"/file.txt"
+}
