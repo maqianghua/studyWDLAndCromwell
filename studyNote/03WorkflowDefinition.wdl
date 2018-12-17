@@ -69,4 +69,15 @@ Scatter {
         x:必须是标识符。例如:所以x是String
         y：必须是数组类型。例如：y就是Array[String]
     }
+    $scatter_body定义了一组作用域，这些作用域将在这个分散块的上下文中执行
+    例如，如果$expression是一个大小为3的整数数组，那么散点子句的主体可以并行执行3次。$identifier将引用数组中的每个整数
+    03.09.Scatter.wdl{
+        在这个例子中，task2依赖于task1。变量i有一个隐式索引属性，以确保我们可以访问task1的正确输出。由于task1和task2都运行N次，其中N是数组整数的长度，所以这些任务的任何标量输出现在都是数组。
+    }
+}
+Conditionals{
+    条件语句仅在表达式计算结果为true时执行主体;
+    当调用的输出被引用到相同的包含之外时，如果需要将其作为可选类型处理.03.10.Conditionals.wdl
+    可选类型可以通过使用select_all和select_first数组函数进行合并.03.11.Conditionals.wdl
+    
 }
