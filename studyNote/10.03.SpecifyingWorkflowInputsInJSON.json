@@ -1,0 +1,7 @@
+{
+    "wf.t1.s":"some_string",
+    "wf.t2.s":"some_string",
+    "wf.int_val":3,
+    "wf.my_ints":[5,6,7,8],
+    "wf.ref_file":"/path/to/file.txt"
+}
