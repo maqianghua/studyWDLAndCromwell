@@ -1,7 +1,7 @@
 19 Import Statements {
     一个WDL文件包含import声明，包含来自其他资源的WDL代码
     import 声明指定那个$string被解析为URL，指向一个WDL文件，engine负责解析URL并下载其内容，每一个URL的文档内容必须是WDL代码
-    每一个Imported wdl文件需要一个命令空间，可以使用标识符指定（通过标示符语法）假如你没有分别执行一个命名空间的标识符，那么默认的命令空间标识符就是WDL的文件名（不包含.wdl扩展名),对于所有imported WDL文件，对于所有imported WDL文件，tasks和workflows来自导入的文件，仅能通过分配的命名空间来访问。import.wdl
+    每一个Imported wdl文件需要一个命名空间，可以使用标识符指定（通过标示符语法）假如你没有分别执行一个命名空间的标识符，那么默认的命名空间标识符就是WDL的文件名（不包含.wdl扩展名),对于所有imported WDL文件，对于所有imported WDL文件，tasks和workflows来自导入的文件，仅能通过分配的命名空间来访问。import.wdl
     对于导入URL，引擎至少支持以下协议：
         http:// 和 https://
         file://
@@ -12,7 +12,7 @@
     任何没有version字段的WDL文件，被认为是draft-2，所有的WDL文件在一个workflow中必须有相同的version。
 }
 17 Document{
-    $document是解析树的根部，它由一个或多个import 声明，task或workflow的定义
+    $document是解析树的根部，它由一个或多个import 声明，task或workflow的定义组成。
 }
 16 Pair Literals{
     Pair值在WDL中被指定，使用另一个Python语法，如下：Pair[Int, String] twenty_threes = (23, "twenty-three")
@@ -21,18 +21,18 @@
         "wf_hello.twenty_three" :{"Left":23, "Right":"twenty-three"}
     }
 }
-15 从Map来阈值Object{
-    从map literals约制object，但是注意以下行为的不同：Object.wdl
-    假如一个Object使用对象类型，Object map_syntax=object{a:...}这样的语法，那么它的key值去"a","b"和"c"
+15 从Map来强转为Object{
+    从map literals约制object，但是注意以下行为的不同：01.01.Object.wdl
+    假如一个Object使用对象类型，Object map_syntax=object{a:...}这样的语法，那么它的key值是"a","b"和"c"
     假如一个Object使用map类型的Object map_coercion={a:..},那么它的key就是一个表达式，因此a将会是一个变量，引用到前面定义的一个变量String a = 'beware'
 }
 14 Objet Literals{
-    Objects Literals定义和maps很类似，但是在{：之前间接需要object 关键字{
+    Objects Literals定义和maps很类似，但是在{之前间接需要object 关键字{
         Object f =Object{
             a:10,
             b:11
         }
-    object 关键字允许键值字段被定义为标识符，而不是String Literals(eg:a:而不是"a":)
+    object 关键字允许键值字段被定义为标识符（表达式），而不是String Literals(eg:a:而不是"a":)
     }
 }
 13 map Literals{
